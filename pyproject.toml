@@ -1,0 +1,64 @@
+[project]
+name = "athena-api"
+version = "0.1.0"
+description = "FastAPI-based backend service providing a clean, modular, and high-performance REST API with PostgreSQL integration."
+authors = [
+    {name = "Sergei Shekshuev",email = "sergei.shekshuev@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "psycopg[binary,pool] (>=3.2.12,<4.0.0)",
+    "fastapi (>=0.121.0,<0.122.0)",
+    "pydantic[email] (>=2.12.3,<3.0.0)",
+    "uvicorn (>=0.38.0,<0.39.0)",
+    "bcrypt (>=5.0.0,<6.0.0)",
+    "python-jose[cryptography] (>=3.5.0,<4.0.0)",
+    "python-dotenv (>=1.2.1,<2.0.0)",
+    "yoyo-migrations (>=9.0.0,<10.0.0)",
+    "pytest-asyncio (>=1.2.0,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.14.3,<0.15.0)",
+    "pytest-cov (>=7.0.0,<8.0.0)",
+    "httpx (>=0.28.1,<0.29.0)"
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+fix = true
+unsafe-fixes = true
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I"]
+ignore = ["W503"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.poetry.scripts]
+athena = "apps.api.app:main"
+
+[tool.poetry]
+packages = [
+    { include = "apps" },
+    { include = "shared" }
+]
+
