@@ -2,7 +2,7 @@ from uuid import UUID
 
 import psycopg.errors
 from psycopg.rows import dict_row
-from psycopg_pool import ConnectionPool
+from psycopg_pool import AsyncConnectionPool
 
 from shared.models.account import (
     CreateAccountDto,
@@ -55,7 +55,7 @@ class AccountRepository:
 
     """
 
-    def __init__(self, pool: ConnectionPool):
+    def __init__(self, pool: AsyncConnectionPool):
         """
         Initialize the repository with a database connection pool.
 

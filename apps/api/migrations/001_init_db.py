@@ -42,7 +42,7 @@ steps = [
             source text,
             created_at timestamp not null default current_timestamp,
             updated_at timestamp not null default current_timestamp,
-            unique (account_id, key)
+            unique (account_id, key, source)
         )
         """,
         "drop table profiles",

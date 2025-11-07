@@ -4,6 +4,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 
 from apps.api.repository.account_repository import AccountRepository
+from apps.api.repository.profile_repository import ProfileRepository
 from shared.config.config import Config
 
 
@@ -22,6 +23,7 @@ def mock_pool():
     mock_cursor.execute = AsyncMock()
     mock_cursor.fetchone = AsyncMock()
     mock_cursor.fetchall = AsyncMock()
+    mock_cursor.executemany = AsyncMock()
     mock_cursor.__aenter__ = AsyncMock(return_value=mock_cursor)
     mock_cursor.__aexit__ = AsyncMock(return_value=None)
 
@@ -141,5 +143,61 @@ def mock_accounts():
             "updated_at": now,
             "confirmed_at": None,
             "deleted_at": None,
+        },
+    ]
+
+
+@pytest.fixture
+def profile_repository(mock_pool):
+    """
+    Provide a ProfileRepository instance with a mocked AsyncConnectionPool.
+
+    This fixture allows isolated testing of ProfileRepository methods
+    by injecting a mocked connection pool (no real DB required).
+    """
+    return ProfileRepository(pool=mock_pool)
+
+
+@pytest.fixture
+def mock_profile_record():
+    """
+    Provide a single fake profile record (row) as returned by the database.
+    """
+    now = datetime.now()
+    return {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "account_id": "00000000-0000-0000-0000-000000000000",
+        "key": "first_name",
+        "value": "John",
+        "source": "user",
+        "created_at": now,
+        "updated_at": now,
+    }
+
+
+@pytest.fixture
+def mock_profile_records():
+    """
+    Provide a list of fake profile records (rows) for bulk query tests.
+    """
+    now = datetime.now()
+    return [
+        {
+            "id": "11111111-1111-1111-1111-111111111111",
+            "account_id": "00000000-0000-0000-0000-000000000000",
+            "key": "first_name",
+            "value": "John",
+            "source": "user",
+            "created_at": now,
+            "updated_at": now,
+        },
+        {
+            "id": "22222222-2222-2222-2222-222222222222",
+            "account_id": "00000000-0000-0000-0000-000000000000",
+            "key": "last_name",
+            "value": "Doe",
+            "source": "system",
+            "created_at": now,
+            "updated_at": now,
         },
     ]
