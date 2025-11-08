@@ -27,7 +27,7 @@ async def test_create_account_success(account_repository, mock_cursor, mock_acco
       3. Assert the returned object and SQL execution details.
     """
     dto = CreateAccountDto(
-        email=mock_account["email"],
+        email=mock_account["email"], password_hash=mock_account["password_hash"]
     )
 
     mock_cursor.fetchone.return_value = mock_account
@@ -53,9 +53,7 @@ async def test_create_account_unique_violation(account_repository, mock_cursor):
       1. Mock `execute()` to raise `psycopg.errors.UniqueViolation`.
       2. Ensure `AccountAlreadyExistsError` is raised.
     """
-    dto = CreateAccountDto(
-        email="john.doe@example.com",
-    )
+    dto = CreateAccountDto(email="john.doe@example.com", password_hash="some_hash")
 
     mock_cursor.execute.side_effect = psycopg.errors.UniqueViolation("duplicate key")
 
@@ -72,9 +70,7 @@ async def test_create_account_unknown_error(account_repository, mock_cursor):
       1. Mock `execute()` to raise a generic `psycopg.errors.Error`.
       2. Ensure `AccountRepositoryError` is raised.
     """
-    dto = CreateAccountDto(
-        email="john.doe@example.com",
-    )
+    dto = CreateAccountDto(email="john.doe@example.com", password_hash="some_hash")
 
     mock_cursor.execute.side_effect = psycopg.errors.Error("connection failure")
 

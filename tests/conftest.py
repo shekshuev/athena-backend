@@ -113,6 +113,7 @@ def mock_account():
     now = datetime.now()
     return {
         "id": "000000-0000-0000-0000-000000000000",
+        "password_hash": "some_hash",
         "email": "account@example.com",
         "status": "active",
         "created_at": now,
@@ -128,6 +129,7 @@ def mock_accounts():
     return [
         {
             "id": "000000-0000-0000-0000-000000000001",
+            "password_hash": "some_hash",
             "email": "first-account@example.com",
             "status": "active",
             "created_at": now,
@@ -137,6 +139,7 @@ def mock_accounts():
         },
         {
             "id": "000000-0000-0000-0000-000000000002",
+            "password_hash": "some_hash",
             "email": "second-account@example.com",
             "status": "blocked",
             "created_at": now,
