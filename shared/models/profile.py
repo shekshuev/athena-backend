@@ -71,7 +71,7 @@ class UpsertProfileRecordsDto:
     """
 
     account_id: str
-    records: List[ProfileKVInput]
+    records: List[ProfileKVInput] = Field(default_factory=list)
 
 
 @dataclass
@@ -82,7 +82,7 @@ class PatchProfileDto:
     """
 
     account_id: str
-    changes: List[ProfileKVInput]
+    changes: List[ProfileKVInput] = Field(default_factory=list)
 
 
 @dataclass

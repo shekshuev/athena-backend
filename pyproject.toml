@@ -3,9 +3,9 @@ name = "athena-api"
 version = "0.1.0"
 description = "FastAPI-based backend service providing a clean, modular, and high-performance REST API with PostgreSQL integration."
 authors = [
-    {name = "Sergei Shekshuev",email = "sergei.shekshuev@gmail.com"}
+    { name = "Sergei Shekshuev", email = "sergei.shekshuev@gmail.com" }
 ]
-license = {text = "MIT"}
+license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -19,7 +19,6 @@ dependencies = [
     "yoyo-migrations (>=9.0.0,<10.0.0)",
     "pytest-asyncio (>=1.2.0,<2.0.0)"
 ]
-
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -53,6 +52,21 @@ line-ending = "lf"
 asyncio_mode = "auto"
 pythonpath = ["."]
 testpaths = ["tests"]
+addopts = "--cov=apps --cov=shared --cov-branch --cov-report=term-missing --cov-fail-under=95"
+
+[tool.coverage.run]
+source = ["apps", "shared"]
+branch = true
+parallel = true
+omit = [
+    "*/__init__.py",
+    "*/tests/*"
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+precision = 1
 
 [tool.poetry.scripts]
 athena = "apps.api.app:main"
@@ -62,4 +76,3 @@ packages = [
     { include = "apps" },
     { include = "shared" }
 ]
-

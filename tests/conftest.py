@@ -6,6 +6,7 @@ import pytest
 from apps.api.repository.account_repository import AccountRepository
 from apps.api.repository.profile_repository import ProfileRepository
 from shared.config.config import Config
+from shared.models.account import ReadAccountDto
 
 
 @pytest.fixture
@@ -86,26 +87,6 @@ def account_repository(mock_pool):
         AccountRepository: Repository instance configured with the mock pool.
     """
     return AccountRepository(pool=mock_pool)
-
-
-@pytest.fixture
-def mock_account_repository():
-    """
-    Provide a fully mocked AccountRepository for service-layer testing.
-
-    This fixture defines a mock repository with its core methods
-    pre-initialized as MagicMock objects.
-
-    Returns:
-        MagicMock: Mocked account repository.
-    """
-    mock_repo = MagicMock()
-    mock_repo.get_account_by_username = MagicMock()
-    mock_repo.get_account_by_email = MagicMock()
-    mock_repo.create_account = MagicMock()
-    mock_repo.update_account = MagicMock()
-    mock_repo.delete_account = MagicMock()
-    return mock_repo
 
 
 @pytest.fixture
@@ -203,4 +184,60 @@ def mock_profile_records():
             "created_at": now,
             "updated_at": now,
         },
+    ]
+
+
+@pytest.fixture
+def mock_account_repository():
+    """
+    Provide a fully mocked AccountRepository for service-layer testing.
+    """
+    mock_repo = MagicMock(spec=AccountRepository)
+    mock_repo.create_account = AsyncMock()
+    mock_repo.get_account_by_id = AsyncMock()
+    mock_repo.get_all_accounts = AsyncMock()
+    mock_repo.update_account = AsyncMock()
+    mock_repo.delete_account = AsyncMock()
+    return mock_repo
+
+
+@pytest.fixture
+def mock_account_dto():
+    now = datetime.now()
+    return ReadAccountDto(
+        id="000000-0000-0000-0000-000000000000",
+        password_hash="some_hash",
+        email="account@example.com",
+        status="active",
+        created_at=now,
+        updated_at=now,
+        confirmed_at=now,
+        deleted_at=None,
+    )
+
+
+@pytest.fixture
+def mock_account_dtos():
+    now = datetime.now()
+    return [
+        ReadAccountDto(
+            id="000000-0000-0000-0000-000000000001",
+            password_hash="some_hash",
+            email="first-account@example.com",
+            status="active",
+            created_at=now,
+            updated_at=now,
+            confirmed_at=now,
+            deleted_at=None,
+        ),
+        ReadAccountDto(
+            id="000000-0000-0000-0000-000000000002",
+            password_hash="some_hash",
+            email="second-account@example.com",
+            status="blocked",
+            created_at=now,
+            updated_at=now,
+            confirmed_at=now,
+            deleted_at=None,
+        ),
     ]
